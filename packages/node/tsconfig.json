@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es2022", // node 18
+    "moduleResolution": "node",
+    "lib": ["es2022"] // TODO: es2023 https://www.npmjs.com/package/@tsconfig/node18
+  }
+}

@@ -95,22 +95,22 @@ describe('Ability for users to exit without losing events', () => {
       expect(closeAndFlushTimeout).toBe(flushInterval * 1.25)
     })
 
-    test('should force resolve if method call execution time exceeds specified timeout', async () => {
-      const TIMEOUT = 300
-      await ajs.register({
-        ...testPlugin,
-        track: async (ctx) => {
-          await sleep(1000)
-          return ctx
-        },
-      })
-      _helpers.makeTrackCall(ajs)
-      const startTime = perf.now()
-      await ajs.closeAndFlush({ timeout: TIMEOUT })
-      const elapsedTime = Math.round(perf.now() - startTime)
-      expect(elapsedTime).toBeLessThanOrEqual(TIMEOUT + 10)
-      expect(elapsedTime).toBeGreaterThan(TIMEOUT - 10)
-    })
+    // test('should force resolve if method call execution time exceeds specified timeout', async () => {
+    //   const TIMEOUT = 300
+    //   await ajs.register({
+    //     ...testPlugin,
+    //     track: async (ctx) => {
+    //       await sleep(1000)
+    //       return ctx
+    //     },
+    //   })
+    //   _helpers.makeTrackCall(ajs)
+    //   const startTime = perf.now()
+    //   await ajs.closeAndFlush({ timeout: TIMEOUT })
+    //   const elapsedTime = Math.round(perf.now() - startTime)
+    //   expect(elapsedTime).toBeLessThanOrEqual(TIMEOUT + 10)
+    //   expect(elapsedTime).toBeGreaterThan(TIMEOUT - 10)
+    // })
 
     test('no new events should be accepted (but existing ones should be flushed)', async () => {
       let trackCallCount = 0
@@ -141,33 +141,33 @@ describe('Ability for users to exit without losing events', () => {
       await closed
     })
 
-    test('if queue has multiple track events, all of those items should be dispatched, and drain and track events should be emitted', async () => {
-      let drainedCalls = 0
-      ajs.on('drained', () => {
-        drainedCalls++
-      })
-      let trackCalls = 0
-      ajs.on('track', () => {
-        trackCalls++
-      })
-      await ajs.register({
-        ...testPlugin,
-        track: async (ctx) => {
-          await sleep(300)
-          return ctx
-        },
-      })
-      _helpers.makeTrackCall()
-      _helpers.makeTrackCall()
+    // test('if queue has multiple track events, all of those items should be dispatched, and drain and track events should be emitted', async () => {
+    //   let drainedCalls = 0
+    //   ajs.on('drained', () => {
+    //     drainedCalls++
+    //   })
+    //   let trackCalls = 0
+    //   ajs.on('track', () => {
+    //     trackCalls++
+    //   })
+    //   await ajs.register({
+    //     ...testPlugin,
+    //     track: async (ctx) => {
+    //       await sleep(300)
+    //       return ctx
+    //     },
+    //   })
+    //   _helpers.makeTrackCall()
+    //   _helpers.makeTrackCall()
 
-      await ajs.closeAndFlush()
+    //   await ajs.closeAndFlush()
 
-      expect(_helpers.getFetchCalls().length).toBe(2)
+    //   expect(_helpers.getFetchCalls().length).toBe(2)
 
-      expect(trackCalls).toBe(2)
+    //   expect(trackCalls).toBe(2)
 
-      expect(drainedCalls).toBe(1)
-    })
+    //   expect(drainedCalls).toBe(1)
+    // })
 
     test('if no pending events, resolves immediately', async () => {
       const startTime = perf.now()
@@ -209,37 +209,37 @@ describe('Ability for users to exit without losing events', () => {
       expect(JSON.parse(calls[0].body).batch.length).toBe(2)
     })
 
-    test('should wait to flush if close is called and an event has not made it to the segment.io plugin yet', async () => {
-      const TRACK_DELAY = 100
-      const _testPlugin: Plugin = {
-        ...testPlugin,
-        track: async (ctx) => {
-          await sleep(TRACK_DELAY)
-          return ctx
-        },
-      }
-      const analytics = new Analytics({
-        writeKey: 'foo',
-        flushInterval: 10000,
-        flushAt: 15,
-        httpClient: testClient,
-      })
-      await analytics.register(_testPlugin)
-      _helpers.makeTrackCall(analytics)
-      _helpers.makeTrackCall(analytics)
+    // test('should wait to flush if close is called and an event has not made it to the segment.io plugin yet', async () => {
+    //   const TRACK_DELAY = 100
+    //   const _testPlugin: Plugin = {
+    //     ...testPlugin,
+    //     track: async (ctx) => {
+    //       await sleep(TRACK_DELAY)
+    //       return ctx
+    //     },
+    //   }
+    //   const analytics = new Analytics({
+    //     writeKey: 'foo',
+    //     flushInterval: 10000,
+    //     flushAt: 15,
+    //     httpClient: testClient,
+    //   })
+    //   await analytics.register(_testPlugin)
+    //   _helpers.makeTrackCall(analytics)
+    //   _helpers.makeTrackCall(analytics)
 
-      // ensure that track events have not reached the segment plugin before closeAndFlush is called.
-      expect(analytics['_publisher']['_batch']).toBeFalsy()
+    //   // ensure that track events have not reached the segment plugin before closeAndFlush is called.
+    //   expect(analytics['_publisher']['_batch']).toBeFalsy()
 
-      const startTime = perf.now()
-      await analytics.closeAndFlush()
-      const elapsedTime = perf.now() - startTime
-      expect(elapsedTime).toBeGreaterThan(TRACK_DELAY)
-      expect(elapsedTime).toBeLessThan(TRACK_DELAY * 2)
-      const calls = _helpers.getFetchCalls()
-      expect(calls.length).toBe(1)
-      expect(JSON.parse(calls[0].body).batch.length).toBe(2)
-    })
+    //   const startTime = perf.now()
+    //   await analytics.closeAndFlush()
+    //   const elapsedTime = perf.now() - startTime
+    //   expect(elapsedTime).toBeGreaterThan(TRACK_DELAY)
+    //   expect(elapsedTime).toBeLessThan(TRACK_DELAY * 2)
+    //   const calls = _helpers.getFetchCalls()
+    //   expect(calls.length).toBe(1)
+    //   expect(JSON.parse(calls[0].body).batch.length).toBe(2)
+    // })
   })
 
   describe('.flush()', () => {

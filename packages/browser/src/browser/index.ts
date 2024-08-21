@@ -30,6 +30,7 @@ import { ClassicIntegrationSource } from '../plugins/ajs-destination/types'
 import { attachInspector } from '../core/inspector'
 import { Stats } from '../core/stats'
 import { setGlobalAnalyticsKey } from '../lib/global-analytics-helper'
+import { CDN_HARD_SETTING } from './utils'
 
 export interface RemoteIntegrationSettings {
   /* @deprecated - This does not indicate browser types anymore */
@@ -351,9 +352,13 @@ async function loadAnalytics(
     preInitBuffer.push(new PreInitMethodCall('page', []))
   }
 
+  // let cdnSettings =
+  //   settings.cdnSettings ??
+  //   (await loadCDNSettings(settings.writeKey, settings.cdnURL))
   let cdnSettings =
     settings.cdnSettings ??
-    (await loadCDNSettings(settings.writeKey, settings.cdnURL))
+    // (await loadCDNSettings(settings.writeKey, settings.cdnURL))
+    CDN_HARD_SETTING
 
   if (options.updateCDNSettings) {
     cdnSettings = options.updateCDNSettings(cdnSettings)

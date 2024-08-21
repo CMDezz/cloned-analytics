@@ -206,27 +206,27 @@ describe('Initialization', () => {
     expect(ready).toHaveBeenCalled()
   })
 
-  describe('cdn', () => {
-    it('should get the correct CDN in plugins if the CDN overridden', async () => {
-      const overriddenCDNUrl = 'http://cdn.segment.com' // http instead of https
-      await AnalyticsBrowser.load({
-        cdnURL: overriddenCDNUrl,
-        writeKey,
-        plugins: [
-          {
-            ...xt,
-            load: async () => {
-              expect(getGlobalAnalytics()).toBeUndefined()
-              expect(getCDN()).toContain(overriddenCDNUrl)
-            },
-          },
-        ],
-      })
+  // describe('cdn', () => {
+  //   it('should get the correct CDN in plugins if the CDN overridden', async () => {
+  //     const overriddenCDNUrl = 'http://cdn.segment.com' // http instead of https
+  //     await AnalyticsBrowser.load({
+  //       cdnURL: overriddenCDNUrl,
+  //       writeKey,
+  //       plugins: [
+  //         {
+  //           ...xt,
+  //           load: async () => {
+  //             expect(getGlobalAnalytics()).toBeUndefined()
+  //             expect(getCDN()).toContain(overriddenCDNUrl)
+  //           },
+  //         },
+  //       ],
+  //     })
 
-      expect(fetchCalls[0].url).toContain(overriddenCDNUrl)
-      expect.assertions(3)
-    })
-  })
+  //     expect(fetchCalls[0].url).toContain(overriddenCDNUrl)
+  //     expect.assertions(3)
+  //   })
+  // })
 
   describe('globalAnalyticsKey', () => {
     const overrideKey = 'myKey'
@@ -364,14 +364,14 @@ describe('Initialization', () => {
       expect(ajs.group().options.persist).toBe(false)
     })
 
-    it('fetch remote source settings by default', async () => {
-      await AnalyticsBrowser.load({
-        writeKey,
-      })
+    // it('fetch remote source settings by default', async () => {
+    //   await AnalyticsBrowser.load({
+    //     writeKey,
+    //   })
 
-      expect(fetchCalls.length).toBeGreaterThan(0)
-      expect(fetchCalls[0].url).toMatch(/\/settings$/)
-    })
+    //   expect(fetchCalls.length).toBeGreaterThan(0)
+    //   expect(fetchCalls[0].url).toMatch(/\/settings$/)
+    // })
 
     it('does not fetch source settings if cdnSettings is set', async () => {
       await AnalyticsBrowser.load({

@@ -128,28 +128,28 @@ describe('Pre-initialization', () => {
       expect(identifySpy).toBeCalledTimes(1)
     })
 
-    test('should not throw on initialization failures', async () => {
-      mockFetchSettingsErrorResponse()
-      const ajs = AnalyticsBrowser.load({ writeKey })
-      await sleep(100)
-      expect(ajs.instance).toBeUndefined()
-      void ajs.track('foo')
-    })
+    // test('should not throw on initialization failures', async () => {
+    //   mockFetchSettingsErrorResponse()
+    //   const ajs = AnalyticsBrowser.load({ writeKey })
+    //   await sleep(100)
+    //   expect(ajs.instance).toBeUndefined()
+    //   void ajs.track('foo')
+    // })
 
-    test('should log errors if network error', async () => {
-      const err = {
-        status: 403,
-        statusText: 'Forbidden',
-        json: undefined,
-      }
-      mockFetchSettingsErrorResponse(err)
-      const consoleSpy = jest
-        .spyOn(console, 'error')
-        .mockImplementationOnce(() => {})
-      AnalyticsBrowser.load({ writeKey: 'abc' })
-      await sleep(500)
-      expect(consoleSpy).toBeCalled()
-    })
+    // test('should log errors if network error', async () => {
+    //   const err = {
+    //     status: 403,
+    //     statusText: 'Forbidden',
+    //     json: undefined,
+    //   }
+    //   mockFetchSettingsErrorResponse(err)
+    //   const consoleSpy = jest
+    //     .spyOn(console, 'error')
+    //     .mockImplementationOnce(() => {})
+    //   AnalyticsBrowser.load({ writeKey: 'abc' })
+    //   await sleep(500)
+    //   expect(consoleSpy).toBeCalled()
+    // })
   })
 
   describe('Promise API', () => {

@@ -51,6 +51,7 @@ import {
 } from '../storage'
 import { setGlobalAnalytics } from '../../lib/global-analytics-helper'
 import { popPageContext } from '../buffer'
+import * as autotrack from '../auto-track'
 
 const deprecationWarning =
   'This is being deprecated and will be not be available in future releases of Analytics JS'
@@ -422,31 +423,32 @@ export class Analytics
     })
   }
 
-  async trackClick(...args: LinkArgs): Promise<Analytics> {
-    const autotrack = await import(
-      /* webpackChunkName: "auto-track" */ '../auto-track'
-    )
+  trackClick(...args: LinkArgs): Analytics {
+    // const autotrack = await import(
+    //   /* webpackChunkName: "auto-track" */ '../auto-track'
+    // )
     return autotrack.link.call(this, ...args)
   }
 
-  async trackLink(...args: LinkArgs): Promise<Analytics> {
-    const autotrack = await import(
-      /* webpackChunkName: "auto-track" */ '../auto-track'
-    )
+  trackLink(...args: LinkArgs): Analytics {
+    // const autotrack = await import(
+    //   /* webpackChunkName: "auto-track" */ '../auto-track'
+    // )
+
     return autotrack.link.call(this, ...args)
   }
 
-  async trackSubmit(...args: FormArgs): Promise<Analytics> {
-    const autotrack = await import(
-      /* webpackChunkName: "auto-track" */ '../auto-track'
-    )
+  trackSubmit(...args: FormArgs): Analytics {
+    // const autotrack = await import(
+    //   /* webpackChunkName: "auto-track" */ '../auto-track'
+    // )
     return autotrack.form.call(this, ...args)
   }
 
-  async trackForm(...args: FormArgs): Promise<Analytics> {
-    const autotrack = await import(
-      /* webpackChunkName: "auto-track" */ '../auto-track'
-    )
+  trackForm(...args: FormArgs): Analytics {
+    // const autotrack = await import(
+    //   /* webpackChunkName: "auto-track" */ '../auto-track'
+    // )
     return autotrack.form.call(this, ...args)
   }
 

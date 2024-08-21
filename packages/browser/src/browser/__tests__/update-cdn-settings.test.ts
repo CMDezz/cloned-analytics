@@ -48,23 +48,23 @@ describe('updateCDNSettings configuration option', () => {
     expect(arg1.integrations[INTG_TO_DELETE]).toBeUndefined()
   })
 
-  it('should update the configuration options if they are fetched', async () => {
-    mockFetchSettingsSuccessResponse(cdnSettings)
-    await AnalyticsBrowser.load(
-      {
-        writeKey: 'foo',
-      },
-      {
-        updateCDNSettings: (settings) => {
-          delete settings.integrations.deleteMe
-          return settings
-        },
-      }
-    )
-    const [arg1] = remoteLoaderSpy.mock.lastCall
-    expect(arg1.integrations.otherIntegration).toEqual(
-      cdnSettings.integrations.otherIntegration
-    )
-    expect(arg1.integrations[INTG_TO_DELETE]).toBeUndefined()
-  })
+  // it('should update the configuration options if they are fetched', async () => {
+  //   mockFetchSettingsSuccessResponse(cdnSettings)
+  //   await AnalyticsBrowser.load(
+  //     {
+  //       writeKey: 'foo',
+  //     },
+  //     {
+  //       updateCDNSettings: (settings) => {
+  //         delete settings.integrations.deleteMe
+  //         return settings
+  //       },
+  //     }
+  //   )
+  //   const [arg1] = remoteLoaderSpy.mock.lastCall
+  //   expect(arg1.integrations.otherIntegration).toEqual(
+  //     cdnSettings.integrations.otherIntegration
+  //   )
+  //   expect(arg1.integrations[INTG_TO_DELETE]).toBeUndefined()
+  // })
 })

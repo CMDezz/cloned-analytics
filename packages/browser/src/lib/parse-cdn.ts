@@ -33,6 +33,26 @@ export const setGlobalCDNUrl = (cdn: string) => {
   _globalCDN = cdn
 }
 
+let _globalApiEndpoint: string | undefined
+const getGlobalApiEndpoint = (): string | undefined => {
+  const result = _globalApiEndpoint ?? getGlobalAnalytics()?._apiEndpoint
+  return result
+}
+
+export const setGlobalApiEndpoint = (endpoint: string) => {
+  const globalAnalytics = getGlobalAnalytics()
+  if (globalAnalytics) {
+    globalAnalytics._apiEndpoint = endpoint
+  }
+  _globalApiEndpoint = endpoint
+}
+
+export const getApiEndPoint = (): string => {
+  const globalApiEndpoint = getGlobalApiEndpoint()
+  if (globalApiEndpoint) return globalApiEndpoint
+  return process.env.API_ENDPOINT || ''
+}
+
 export const getCDN = (): string => {
   const globalCdnUrl = getGlobalCDNUrl()
 

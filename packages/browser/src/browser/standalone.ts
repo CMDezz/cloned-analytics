@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { getCDN, setGlobalCDNUrl } from '../lib/parse-cdn'
+import {
+  getApiEndPoint,
+  getCDN,
+  setGlobalApiEndpoint,
+  setGlobalCDNUrl,
+} from '../lib/parse-cdn'
 import { setVersionType } from '../lib/version-type'
 
 if (process.env.IS_WEBPACK_BUILD) {
@@ -8,7 +13,9 @@ if (process.env.IS_WEBPACK_BUILD) {
     __webpack_public_path__ = process.env.ASSET_PATH
   } else {
     const cdn = getCDN()
+    const endpoint = getApiEndPoint()
     setGlobalCDNUrl(cdn)
+    setGlobalApiEndpoint(endpoint)
 
     // @ts-ignore
     __webpack_public_path__ = cdn

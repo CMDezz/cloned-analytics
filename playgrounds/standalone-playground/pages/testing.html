@@ -1,0 +1,207 @@
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: monospace;
+        }
+
+        #event {
+            margin: 2em 0;
+            min-height: 200px;
+            min-width: 700px;
+        }
+    </style>
+
+    <form method="get">
+        <input type="text" name="writeKey" placeholder="Writekey" />
+        <button>Load</button>
+    </form>
+
+    <script src="./script.js"></script>
+</head>
+
+<body>
+    <form style="margin-bottom: 20px;">
+        <textarea name="event" id="event">
+        {
+            "userName":"viet",
+            "userEmail":"vietlv14",
+            "userId":"11222333444",
+            "topic":"finance",
+            "url":"https://google.com.vn",
+            "custom-property":"custom-property"
+        }
+    </textarea>
+        <div>
+            <p>analytics.page was called by default (some destination need page for initial)</p>
+            <button id="track">Track (analytics.track)</button>
+            <button id="identify">Identify (analytics.identify)</button>
+            <div>---</div>
+            <a href="#" id="link">Link (analytics.trackLink)</a>
+            <a href="#" target="_blank" id="link">Link blank (analytics.trackLink)</a>
+            <div>---</div>
+            <button id="group">Group (analytics.group)</button>
+            <button id="alias">Alias (analytics.alias)</button>
+            <div>---</div>
+
+        </div>
+    </form>
+    <form id="form-submit" onsubmit="handleSubmit" style="margin-bottom: 20px;">
+        <div style="margin-bottom: 10px;">
+            <label>Username: </label>
+            <input name="username" placeholder="Enter username" />
+        </div>
+        <button id="btn-submit">Submit (analytics.trackForm)</button>
+    </form>
+
+
+    <pre id="ready-logs"></pre>
+    <pre id="logs"></pre>
+
+    <script type="text/javascript">
+        const options = {
+            integrations: { All: false, 'Google Analytics': true, 'Segment.io': true }
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault()
+            console.log("submit form", e)
+        }
+
+        function getData() {
+            var contents = document.querySelector('#event').value
+            var data = JSON.parse(contents)
+            console.time('identify')
+        }
+        function printLog(promise) {
+            promise &&
+                promise.then &&
+                promise.then(function (ctx) {
+                    console.timeEnd('track')
+                    console.profileEnd('track')
+                    ctx.flush()
+                    document.querySelector('#logs').textContent = JSON.stringify(
+                        ctx.event,
+                        null,
+                        '  '
+                    )
+                })
+        }
+        if (window.analytics) {
+            window.analytics.ready(function onReady() {
+                console.profileEnd('snippet')
+                console.timeEnd('snippet')
+                document.querySelector('#ready-logs').textContent = 'ready!'
+
+                // * TRACKLINK
+                const linkElms = document.querySelectorAll("#link")
+                analytics.trackLink(linkElms, "Tracked link ", {
+                    linkData: "linkData"
+                })
+                // * TRACK FORM
+                const formElms = document.querySelectorAll("#form-submit")
+                
+                analytics.trackForm([...formElms], "Tracked form ", {
+                    formData: "formData"
+                })
+            })
+
+            // * TRACK
+            document.querySelector('#track').addEventListener('click', function (e) {
+                e.preventDefault()
+                const data = getData()
+                console.profile('track')
+                console.time('track')
+                var promise = window.analytics.track(
+                    'tracked',
+                    data,
+                    options
+                )
+
+                printLog(promise)
+            })
+
+            // * TRACK CLICK
+            document
+                .querySelector('#identify')
+                .addEventListener('click', function (e) {
+                    e.preventDefault()
+                    const data = getData()
+
+                    console.time('identify')
+                    var promise = window.analytics.identify(
+                        'tracked identify',
+                        data,
+                        options
+                    )
+
+                    printLog(promise)
+                })
+
+            // * TRACK GROUP
+            document.querySelector('#group').addEventListener('click', function (e) {
+                e.preventDefault()
+                var contents = document.querySelector('#event').value
+                var data = JSON.parse(contents || "") || {}
+                console.profile('group')
+                console.time('group')
+                var promise = window.analytics.group(
+                    'tracked group',
+                    {
+                        principles: ['Eckert', 'Mauchly'],
+                        site: 'Eckert–Mauchly Computer Corporation',
+                        statedGoals: 'Develop the first commercial computer',
+                        industry: 'Technology',
+                        ...data
+                    }
+                )
+
+                printLog(promise)
+            })
+            // * TRACK ALIAS
+            document.querySelector('#alias').addEventListener('click', function (e) {
+                e.preventDefault()
+                var contents = document.querySelector('#event').value
+                var data = JSON.parse(contents)
+                console.profile('alias')
+                console.time('alias')
+                var promise = window.analytics.track(
+                    'new-user-id',
+                    data.userID,
+                    options
+                )
+
+                printLog(promise)
+            })
+
+            // * TRACK FORM SUBMIT TRICK DYNAMIC FORM VALUES
+            //    const formElemList = document.querySelectorAll("#form-submit");
+            //     formElemList.forEach((form) => {
+            //     form.addEventListener("submit", (e) => {
+            //         // on form submission, prevent default
+            //         e.preventDefault();
+            //         // construct a FormData object, which fires the formdata event
+            //         new FormData(form);
+            //     });
+
+            //     form.addEventListener("formdata", (e) => {
+            //         // Get the form data from the event object
+            //         let data = e.formData;
+            //         let obj = {};
+
+            //         const entries = [...data.entries()];
+
+            //         entries.forEach((entry) => (obj[entry[0]] = entry[1]));
+            //         console.log('form.attributes[2].nodeValue ',form.attributes[2]);
+
+            //         analytics.track(form.attributes[2].nodeValue, obj);
+            //     });
+            //     });
+
+
+        }
+    </script>
+</body>
+
+</html>

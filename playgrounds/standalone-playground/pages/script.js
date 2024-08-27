@@ -1,3 +1,5 @@
+//https://cdn.fpt.com -> ./index.js (cdn.segment)
+//api.eclick.com/v1 -> api.segment.io/v1
 const { searchParams } = new URL(document.location)
 const writeKey = searchParams.get('writeKey')
 document.querySelector('input').value = writeKey
@@ -28,15 +30,15 @@ console.time('snippet')
         'track',
         'ready',
         'alias',
-        'debug',
+        // 'debug',
         'page',
         'once',
         'off',
         'on',
-        'addSourceMiddleware',
-        'addIntegrationMiddleware',
+        // 'addSourceMiddleware',
+        // 'addIntegrationMiddleware',
         'setAnonymousId',
-        'addDestinationMiddleware',
+        // 'addDestinationMiddleware',
       ]
       analytics.factory = function (e) {
         return function () {

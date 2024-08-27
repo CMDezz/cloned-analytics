@@ -47,12 +47,12 @@
 
         </div>
     </form>
-    <form id="form-submit" onsubmit="handleSubmit" style="margin-bottom: 20px;">
+    <form id="form-submit" style="margin-bottom: 20px;">
         <div style="margin-bottom: 10px;">
             <label>Username: </label>
             <input name="username" placeholder="Enter username" />
         </div>
-        <button id="btn-submit">Submit (analytics.trackForm)</button>
+        <button id="btn-submit" type="submit">Submit (analytics.trackForm (it's analytics.track))</button>
     </form>
 
 
@@ -62,11 +62,6 @@
     <script type="text/javascript">
         const options = {
             integrations: { All: false, 'Google Analytics': true, 'Segment.io': true }
-        }
-
-        function handleSubmit(e) {
-            e.preventDefault()
-            console.log("submit form", e)
         }
 
         function getData() {
@@ -88,6 +83,8 @@
                     )
                 })
         }
+
+
         if (window.analytics) {
             window.analytics.ready(function onReady() {
                 console.profileEnd('snippet')
@@ -99,13 +96,8 @@
                 analytics.trackLink(linkElms, "Tracked link ", {
                     linkData: "linkData"
                 })
-                // * TRACK FORM
-                const formElms = document.querySelectorAll("#form-submit")
-                
-                analytics.trackForm([...formElms], "Tracked form ", {
-                    formData: "formData"
-                })
             })
+
 
             // * TRACK
             document.querySelector('#track').addEventListener('click', function (e) {
@@ -166,7 +158,7 @@
                 var data = JSON.parse(contents)
                 console.profile('alias')
                 console.time('alias')
-                var promise = window.analytics.track(
+                var promise = window.analytics.alias(
                     'new-user-id',
                     data.userID,
                     options
@@ -176,28 +168,26 @@
             })
 
             // * TRACK FORM SUBMIT TRICK DYNAMIC FORM VALUES
-            //    const formElemList = document.querySelectorAll("#form-submit");
-            //     formElemList.forEach((form) => {
-            //     form.addEventListener("submit", (e) => {
-            //         // on form submission, prevent default
-            //         e.preventDefault();
-            //         // construct a FormData object, which fires the formdata event
-            //         new FormData(form);
-            //     });
+               const formElemList = document.querySelectorAll("#form-submit");
+                formElemList.forEach((form) => {
+                form.addEventListener("submit", (e) => {
+                    // on form submission, prevent default
+                    e.preventDefault();
+                    // construct a FormData object, which fires the formdata event
+                    new FormData(form);
+                });
 
-            //     form.addEventListener("formdata", (e) => {
-            //         // Get the form data from the event object
-            //         let data = e.formData;
-            //         let obj = {};
+                form.addEventListener("formdata", (e) => {
+                    // Get the form data from the event object
+                    let data = e.formData;
+                    let obj = {};
 
-            //         const entries = [...data.entries()];
+                    const entries = [...data.entries()];
 
-            //         entries.forEach((entry) => (obj[entry[0]] = entry[1]));
-            //         console.log('form.attributes[2].nodeValue ',form.attributes[2]);
-
-            //         analytics.track(form.attributes[2].nodeValue, obj);
-            //     });
-            //     });
+                    entries.forEach((entry) => (obj[entry[0]] = entry[1]));
+                    analytics.track(form.attributes[0].nodeValue, obj);
+                });
+                });
 
 
         }

@@ -8,7 +8,7 @@ export interface AnalyticsSettings {
    */
   writeKey: string
   /**
-   * The base URL of the API. Default: "https://api.segment.io"
+   * The base URL of the API. Default: "https://api.eclick.com"
    */
   host?: string
   /**

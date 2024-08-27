@@ -58,7 +58,7 @@ export abstract class BasePage {
   }
 
   private async mockSegmentTrackingAPI(): Promise<void> {
-    const mock = await browser.mock('https://api.segment.io/v1/t', {
+    const mock = await browser.mock('https://api.eclick.com/v1/t', {
       method: 'post',
     })
     mock.respond((mock) => {
@@ -90,14 +90,14 @@ export abstract class BasePage {
     })
       .addActionDestinationSettings(
         {
-          url: 'https://cdn.segment.com/next-integrations/actions/fullstory-plugins/foo.js',
+          url: 'https://cdn.fpt.com/next-integrations/actions/fullstory-plugins/foo.js',
           creationName: 'FullStory',
           consentSettings: {
             categories: ['FooCategory2'],
           },
         },
         {
-          url: 'https://cdn.segment.com/next-integrations/actions/amplitude-plugins/foo.js',
+          url: 'https://cdn.fpt.com/next-integrations/actions/amplitude-plugins/foo.js',
           creationName: 'Actions Amplitude',
           consentSettings: {
             categories: ['FooCategory1'],

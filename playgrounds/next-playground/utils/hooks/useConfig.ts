@@ -7,4 +7,4 @@ export const useWriteKey = () =>
   )
 
 export const useCDNUrl = () =>
-  useLocalStorage('segment_playground_cdn_url', 'https://cdn.segment.com')
+  useLocalStorage('segment_playground_cdn_url', 'https://cdn.fpt.com')

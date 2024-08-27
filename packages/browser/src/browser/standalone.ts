@@ -20,7 +20,7 @@ if (process.env.IS_WEBPACK_BUILD) {
     // @ts-ignore
     __webpack_public_path__ = cdn
       ? cdn + '/analytics-next/bundles/'
-      : 'https://cdn.fpt.com/analytics-next/bundles/'
+      : 'https://cdn.segment.com/analytics-next/bundles/'
   }
 }
 

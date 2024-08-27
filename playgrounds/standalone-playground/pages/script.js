@@ -1,5 +1,5 @@
-//https://cdn.fpt.com -> ./index.js (cdn.segment)
-//api.eclick.com/v1 -> api.segment.io/v1
+//https://cdn.segment.com -> ./index.js (cdn.segment)
+//api.segment.io/v1 -> api.segment.io/v1
 const { searchParams } = new URL(document.location)
 const writeKey = searchParams.get('writeKey')
 document.querySelector('input').value = writeKey

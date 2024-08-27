@@ -71,7 +71,7 @@ export class Publisher {
     this._flushAt = Math.max(flushAt, 1)
     this._flushInterval = flushInterval
     this._url = tryCreateFormattedUrl(
-      host ?? 'https://api.eclick.com',
+      host ?? 'https://api.segment.io',
       path ?? '/v1/batch'
     )
     this._httpRequestTimeout = httpRequestTimeout ?? 10000

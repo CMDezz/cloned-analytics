@@ -133,7 +133,7 @@ export interface AnalyticsBrowserSettings {
    */
   cdnSettings?: CDNSettings & Record<string, unknown>
   /**
-   * If provided, will override the default Segment CDN (https://cdn.fpt.com) for this application.
+   * If provided, will override the default Segment CDN (https://cdn.segment.com) for this application.
    */
   cdnURL?: string
   /**

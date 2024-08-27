@@ -57,7 +57,7 @@ export class BasePage {
   }
 
   async mockTrackingApi() {
-    await this.page.route('https://api.eclick.com/v1/*', (route, request) => {
+    await this.page.route('https://api.segment.io/v1/*', (route, request) => {
       this.lastTrackingApiReq = request
       this.trackingApiReqs.push(request.postDataJSON())
       if (request.method().toLowerCase() !== 'post') {
@@ -74,7 +74,7 @@ export class BasePage {
   }
 
   waitForTrackingApiFlush(timeout = 5000) {
-    return this.page.waitForResponse('https://api.eclick.com/v1/*', { timeout })
+    return this.page.waitForResponse('https://api.segment.io/v1/*', { timeout })
   }
 
   async mockSignalsApi() {
@@ -105,7 +105,7 @@ export class BasePage {
 
   async mockCDNSettings() {
     await this.page.route(
-      'https://cdn.fpt.com/v1/projects/*/settings',
+      'https://cdn.segment.com/v1/projects/*/settings',
       (route, request) => {
         if (request.method().toLowerCase() !== 'get') {
           throw new Error('expect to be a GET request')
@@ -155,7 +155,7 @@ export class BasePage {
 
   waitForCDNSettingsResponse() {
     return this.page.waitForResponse(
-      'https://cdn.fpt.com/v1/projects/*/settings'
+      'https://cdn.segment.com/v1/projects/*/settings'
     )
   }
 

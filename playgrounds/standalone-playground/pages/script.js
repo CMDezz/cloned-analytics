@@ -1,8 +1,8 @@
 //https://cdn.segment.com -> ./index.js (cdn.segment)
 //api.segment.io/v1 -> api.segment.io/v1
 const { searchParams } = new URL(document.location)
-const writeKey = searchParams.get('writeKey')
-document.querySelector('input').value = writeKey
+// const writeKey = searchParams.get('writeKey')
+// document.querySelector('input').value = writeKey
 
 console.profile('snippet')
 console.time('snippet')
@@ -63,7 +63,7 @@ console.time('snippet')
         analytics._loadOptions = e
       }
       analytics.SNIPPET_VERSION = '4.13.1'
-      analytics._writeKey = writeKey
+      // analytics._writeKey = writeKey
       analytics.load()
       analytics.page()
     }
